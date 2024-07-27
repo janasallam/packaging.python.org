@@ -1,34 +1,204 @@
-.. _installing-packages:
+import time
+import random
 
-===================
-Installing Packages
-===================
+def input_correct():
+    # If the user entered a false answer
+    while True:
+        try:
+            num = int(input("Enter an integer 1-2: "))
+            if num < 1 or num > 2:
+                print('The integer must be in the range 1-2')
+            else:
+                return num
+        except ValueError:
+            print("Please enter a valid integer 1-2")
 
-This section covers the basics of how to install Python :term:`packages
-<Distribution Package>`.
+# The computer will decide go to the island or come back
+def game():
+    score = 0
+    name = intro()
+    num = random.randint(1, 2)
+    if num == 1:
+        score = island_adventure(score)
+    elif num == 2:
+        score = home_decision(score)
+    print("Final score:", score)
 
-It's important to note that the term "package" in this context is being used to
-describe a bundle of software to be installed (i.e. as a synonym for a
-:term:`distribution <Distribution Package>`). It does not refer to the kind
-of :term:`package <Import Package>` that you import in your Python source code
-(i.e. a container of modules). It is common in the Python community to refer to
-a :term:`distribution <Distribution Package>` using the term "package".  Using
-the term "distribution" is often not preferred, because it can easily be
-confused with a Linux distribution, or another larger software distribution
-like Python itself.
+def intro():
+    name = str(input("Enter your name: ")).strip()
+    if name.isalpha() and len(name) >= 3:
+        print(f"I am {name}")
+        time.sleep(2)
+        print("I took a boat out to sea without checking the weather")
+        time.sleep(2)
+        print("Now, I am in the middle of the sea, it's raining")
+        time.sleep(2)
+        print("The waves are high, and the boat can turn over at any time")
+        time.sleep(2)
+        print("In front of me is an island that seems close")
+        time.sleep(2)
+        print("What should I do? Should I go to the island or come back?")
+    else:
+        print("Please enter your name correctly")
+        return intro()  
+    return name
 
+def island_adventure(score):
+    print("Score:", score)
+    time.sleep(2)
+    print("I decided to go to the island.")
+    time.sleep(2)
+    # The user will decide here to sleep or start a fire
+    print("It's night and I'm on the island now. I want to sleep")
+    time.sleep(2)
+    print("What should I do? Sleep or try to start a fire first and then sleep?")
+    time.sleep(2)
+    print("1 - Sleep")
+    time.sleep(2)
+    print("2 - Try to start a fire")
+    time.sleep(2)
+    y = input_correct()
+    # If user decided to sleep
+    if y == 1:
+        score -= 1
+        print("Score:", score)
+        time.sleep(2)
+        print("A lion came because I didn't start a fire. I don't know what to do")
+        time.sleep(2)
+        print("Should I run or climb the tree?")
+        time.sleep(2)
+        # The user will choose run or climb a tree
+        print("1 - Run")
+        time.sleep(2)
+        print("2 - Climb the tree")
+        time.sleep(2)
+        z = input_correct()
+        # If user chooses run
+        if z == 1:
+            score = 0
+            print("Score:", score)
+            time.sleep(2)
+            print("I couldn't escape because the lion was faster than me and it killed me.")
+            time.sleep(2)
+        # If user chooses climb a tree
+        elif z == 2:
+            score += 3
+            print("Score:", score)
+            time.sleep(2)
+            print("Oh, I managed to survive, and now the lion is gone.")
+            time.sleep(2)
+            score = food_decision(score)
+    # If user chooses start a fire
+    elif y == 2:
+        print("I slept safely.")
+        time.sleep(2)
+        score = food_decision(score)
+    return score
 
-.. _installing_requirements:
+# If computer chooses come back
+def home_decision(score):
+    print("I decided to come back.")
+    time.sleep(2)
+    print("I decided to go back and call someone to come and take me.")
+    time.sleep(2)
+    print("Otherwise, they wouldn't have a network because the weather isn't good")
+    time.sleep(2)
+    print("Also, I'm in the middle of the sea")
+    time.sleep(2)
+    print("Otherwise, I would wear a life jacket and try to come back")
+    time.sleep(2)
+    print("If something happened on the boat")
+    time.sleep(2)
+    # The user will choose wear a life jacket or call someone
+    print("1 - Wear a life jacket")
+    time.sleep(2)
+    print("2 - Call someone")
+    while True:
+        b = input("Enter 1 or 2: ").strip()
+        if b.isdigit() and int(b) in [1, 2]:
+            b = int(b)
+            break
+        else:
+            print("Please enter a valid option (1 or 2).")
+    # If user chooses wear a life jacket
+    if b == 1:
+        score += 5
+        print("Score:", score)
+        print("I managed to survive and now I'm on my way home, thank you")
+    # If user chooses call someone
+    elif b == 2:
+        score = 0
+        print("Score:", score)
+        print("There was no net, the waves were high, and the boat capsized and died")
+    return score
 
-Requirements for Installing Packages
-====================================
+# The user will decide go to the sea or search in the forest
+def food_decision(score):
+    print("Now I am hungry and there are many fish in the sea, but the sea")
+    time.sleep(2)
+    print("waves are very high. Should I go to the sea or search in the forest for food")
+    time.sleep(2)
+    print("1 - Go to the sea")
+    time.sleep(2)
+    print("2 - Search in the forest")
+    m = input_correct()
+    # When he decides to go to the sea
+    if m == 1:
+        score = 0
+        print("Score:", score)
+        time.sleep(2)
+        print("I drowned.")
+        time.sleep(2)
+    # When he decides to search in the forest
+    elif m == 2:
+        score += 3
+        print("Score:", score)
+        time.sleep(2)
+        print("I found food and ate.")
+        time.sleep(2)
+        print("After eating, I have to build a boat to return. After hard and exhausting work")
+        time.sleep(2)
+        print("I have completed the boat. Now, I can check the weather on my phone or just go back.")
+        time.sleep(2)
+        score = weather_decision(score)
+    return score
 
-This section describes the steps to follow before installing other Python
-packages.
+# The user will choose watch the weather or go back
+def weather_decision(score):
+    print("1 - Watch the weather")
+    time.sleep(2)
+    print("2 - Go back")
+    n = input_correct()
+    if n == 1:
+        score += 5
+        print("Score:", score)
+        time.sleep(2)
+        print("I arrived home safely, thank you.")
+        time.sleep(2)
+    elif n == 2:
+        score = 0
+        print("Score:", score)
+        time.sleep(2)
+        print("The weather was rainy and the waves were high. The boat capsized")
+        time.sleep(2)
+        print("and I drowned. I made the same mistake and told you.")
+        time.sleep(2)
+    return score
 
+# Start the game
+game()
+# Ask the user if they want to play again
+while True:
+    response = input("Do you want to play again? (yes/no): ").strip().lower()
+    if response == "yes":
+        print("Great!")
+        game()
+    elif response == "no":
+        print("Thanks for playing!")
+        break
+    else:
+        print("Invalid response. Please enter 'yes' or 'no'.")
 
-Ensure you can run Python from the command line
------------------------------------------------
 
 Before you go any further, make sure you have Python and that the expected
 version is available from your command line. You can check this by running:
